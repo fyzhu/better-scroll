@@ -16,6 +16,8 @@ const WHEEL_INDEX_CHANGED_EVENT_NAME = 'wheelIndexChanged'
 
 export interface WheelConfig {
   selectedIndex: number
+  selectColor: string
+  normalColor: string
   rotate: number
   adjustTime: number
   wheelWrapperClass: string
@@ -135,10 +137,17 @@ export default class Wheel implements PluginAPI {
     )
     // Scroller
     scroller.hooks.on(scroller.hooks.eventTypes.checkClick, () => {
-      const index = HTMLCollectionToArray(this.items).indexOf(this.target)
-      if (index === -1) return true
+      const items = HTMLCollectionToArray(this.items)
 
-      this.wheelTo(index, this.options.adjustTime, ease.swipe)
+      let index = -1
+      if (items.includes(this.target)) {
+        index = items.indexOf(this.target)
+      } else if (this.target?.parentNode && items.includes(this.target.parentNode)) {
+        index = items.indexOf(this.target.parentNode)
+      }
+      if (index !== -1)
+        this.wheelTo(index, this.options.adjustTime, ease.swipe)
+
       return true
     })
     scroller.hooks.on(
@@ -305,6 +314,11 @@ export default class Wheel implements PluginAPI {
       const deg = rotate * (y / this.itemHeight + i)
       // Too small value is invalid in some phones, issue 1026
       const SafeDeg = deg.toFixed(3)
+      if (SafeDeg == '0') {
+        (this.items[i] as HTMLElement).style.color = this.options.selectColor
+      } else {
+          (this.items[i] as HTMLElement).style.color = this.options.normalColor
+      }
       ;(this.items[i] as HTMLElement).style[
         style.transform as any
       ] = `rotateX(${SafeDeg}deg)`

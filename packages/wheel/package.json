@@ -1,10 +1,10 @@
 {
-  "name": "@better-scroll/wheel",
+  "name": "@fyzhu/wheel",
   "version": "2.5.0",
   "description": "a BetterScroll plugin to imitate IOS Picker",
   "author": {
-    "name": "jizhi",
-    "email": "theniceangel@163.com"
+    "name": "fyzhu",
+    "email": "i@zhuyunfeng.com"
   },
   "main": "dist/wheel.min.js",
   "module": "dist/wheel.esm.js",
